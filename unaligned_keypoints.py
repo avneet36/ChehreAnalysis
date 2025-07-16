@@ -36,20 +36,35 @@ FEATURE_COLORS = {
 fa = face_alignment.FaceAlignment(LandmarksType.TWO_D, flip_input=False, device='cpu')
 
 #load input video
-cap = cv2.VideoCapture("video1.mp4")
-frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) #get frame count
-print("Total frames:", frame_count)                  #print count
-print("Frame Rate: ", cv2.CAP_PROP_FRAME_COUNT)      #get rate
+video_folder = "Videos"
+for filename in os.listdir(video_folder):
+    if filename.endswith("_24fps.mp4"):
+        video_path = os.path.join(video_folder, filename)
+        print(f"\nProcessing video: {filename}")  # Print the video name!
 
-# output directories for saving annotated frames 
-os.makedirs("output_unalignedFrames", exist_ok=True)
+        cap = cv2.VideoCapture(video_path)
 
-# List to store landmark coordinates for all frames, grouped by frame
-all_grouped = []
+        frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) #get frame count
+        frame_rate = cap.get(cv2.CAP_PROP_FPS)
+        duration = frame_count / frame_rate
+        print("Total frames:", frame_count)    #print count
+        print("Frame Rate: ", frame_rate)      #get rate
+        print(f"Duration: {duration:.2f} seconds")
+        
 
-# Empty Dictionary to get each feature's keypoint trajectories across frames
-feature_trajectories = {k: [] for k in FACIAL_FEATURES}
 
+
+
+    # output directories for saving annotated frames 
+    os.makedirs("output_unalignedFrames", exist_ok=True)
+
+    # List to store landmark coordinates for all frames, grouped by frame
+    all_grouped = []
+
+    # Empty Dictionary to get each feature's keypoint trajectories across frames
+    feature_trajectories = {k: [] for k in FACIAL_FEATURES}
+
+    
 #process each frame in videoo
 for idx in tqdm(range(frame_count), desc="Processing frames"):
     ret, frame = cap.read()     #read next frame if not end (ret = TRUE)
@@ -164,6 +179,7 @@ def plot_feature_distances(data, output_folder, title_prefix):
         avg_dist = np.mean(trimmed, axis=0)
         avg_distances_across_features.append(avg_dist)
 
+
     # --- Overall average plot (avg across all features & points) --- #
     min_frames = min(arr.shape[0] for arr in avg_distances_across_features)
     trimmed = [arr[:min_frames] for arr in avg_distances_across_features]
@@ -177,6 +193,7 @@ def plot_feature_distances(data, output_folder, title_prefix):
     plt.tight_layout()
     plt.savefig(os.path.join(output_folder, f"overall_average.png"))
     plt.close()
+    return avg_across_all  
 
 # Load distance data from JSON
 with open("diff_from_first_frame.json") as f:
@@ -185,11 +202,21 @@ with open("diff_from_prev_frame.json") as f:
     diff_prev = json.load(f)
 
 # Plot for diff from first frame
-plot_feature_distances(
+# capture the returned overall avg when function is called
+overall_avg_first = plot_feature_distances(
     diff_first,
     output_folder="graphs_diff_from_first_frame",
     title_prefix="Distance from First Frame"
 )
+
+#get max point from the overall avg array 
+apex_indices = np.where(overall_avg_first == np.max(overall_avg_first))[0]
+
+print("\nApex Frame(s) (peak average distance from first frame):")
+for idx in apex_indices:
+    timestamp = idx / frame_rate
+    print(f"Frame {idx} at {timestamp:.2f} seconds (Distance={overall_avg_first[idx]:.2f})")
+
 
 # Plot for diff from previous frame
 plot_feature_distances(
