@@ -6,6 +6,8 @@ numpy_landmarks_byVideo/
 unalignedFrames_byVideo/
 graphs_diff_from_first_frame/
 graphs_diff_from_prev_frame/
+output_unalignedFrames/
+Videos/
 
 # Ignore numpy facial landmarks (per video)
 numpy_landmarks_byVideo/
