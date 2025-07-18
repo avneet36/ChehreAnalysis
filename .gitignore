@@ -1,1 +1,38 @@
+# Ignore generated facial keypoint graphs
+keypointGraphs_byVideo/
+
+# Ignore extracted/un-aligned video frames
+unalignedFrames_byVideo/
+graphs_diff_from_first_frame/
+graphs_diff_from_prev_frame/
+
+# Ignore numpy facial landmarks (per video)
+numpy_landmarks_byVideo/
+
+# Ignore all video files in Videos folder
+Videos/*.mp4
+Videos/*.avi
+Videos/*.mov
+Videos/*.mkv
+
+# Ignore extracted frames as folders (if created)
+Videos/*_frames_24fps/
+
+# Ignore all images created in Videos (if any)
+Videos/*.png
+Videos/*.jpg
+
+# Ignore ffmpeg.exe (already here)
 ffmpeg.exe
+ffprobe.exe
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore auto-generated JSON and NPZ files
+*.json
+*.npz
+
+# Ignore log files (if you create any)
+*.log
