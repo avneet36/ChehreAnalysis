@@ -1,5 +1,6 @@
 # Ignore generated facial keypoint graphs
 keypointGraphs_byVideo/
+numpy_landmarks_byVideo/
 
 # Ignore extracted/un-aligned video frames
 unalignedFrames_byVideo/
