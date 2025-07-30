@@ -8,6 +8,11 @@ graphs_diff_from_first_frame/
 graphs_diff_from_prev_frame/
 output_unalignedFrames/
 Videos/
+SONA_perfect_samples_all_videos/
+AUs_sample/
+framesByVideo/
+landmarksByVideo/
+
 
 # Ignore numpy facial landmarks (per video)
 numpy_landmarks_byVideo/
@@ -17,6 +22,8 @@ Videos/*.mp4
 Videos/*.avi
 Videos/*.mov
 Videos/*.mkv
+AUs_sample/*.mp4
+SONA_perfect_samples_all_videos/*.mp4
 
 # Ignore extracted frames as folders (if created)
 Videos/*_frames_24fps/
