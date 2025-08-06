@@ -11,7 +11,7 @@ def npzToJson(filename):
 
     for i, frame in enumerate(keypoints_array):
         if np.isnan(frame).all():
-            json_data[f"frame_{i}"] = None  # no face detected
+            json_data[f"frame_{i}"] = [0.0] * frame.shape[1]  # no face detected, put 0's instead of None
         else:
             json_data[f"frame_{i}"] = frame.tolist()
 
@@ -25,3 +25,6 @@ def npzToJson(filename):
 if __name__ == "__main__":
     npz_file = sys.argv[1]
     npzToJson(npz_file)
+
+# 256 * 256 image (blank) and plot the keypoints there (can also make it contour), would need to multiply the normalized keypoints by 256
+# a util folder: visualize keypoints (will be public)

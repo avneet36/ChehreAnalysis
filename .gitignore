@@ -12,6 +12,7 @@ SONA_perfect_samples_all_videos/
 AUs_sample/
 framesByVideo/
 landmarksByVideo/
+test/
 
 
 # Ignore numpy facial landmarks (per video)
